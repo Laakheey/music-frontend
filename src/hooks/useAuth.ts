@@ -6,6 +6,7 @@ export default function useAuth(code: string) {
   const [expiresIn, setExpiresIn] = useState("");
 
   useEffect(() => {
+    console.log(import.meta.env.VITE_AUTH_URL);
     fetch(`${import.meta.env.VITE_API_URL}login`, {
       method: "POST",
       headers: {
