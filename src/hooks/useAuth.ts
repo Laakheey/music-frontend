@@ -6,7 +6,7 @@ export default function useAuth(code: string) {
   const [expiresIn, setExpiresIn] = useState("");
 
   useEffect(() => {
-    fetch("http://localhost:5124/login", {
+    fetch(`${import.meta.env.VITE_API_URL}login`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -15,7 +15,6 @@ export default function useAuth(code: string) {
     })
       .then((res: any) => {
         res.json().then((data: any) => {
-          localStorage.setItem('spotify_token', data.accessToken);
           setAccessToken(data.accessToken);
           setRefreshToken(data.refreshToken);
           setExpiresIn(data.expiresIn);
@@ -31,7 +30,7 @@ export default function useAuth(code: string) {
     if (!refreshToken || !expiresIn) return;
 
     const interval = setInterval(() => {
-      fetch("http://localhost:5124/refresh", {
+      fetch(`${import.meta.env.VITE_API_URL}refresh`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

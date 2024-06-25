@@ -16,7 +16,7 @@ export type SearchResultType = {
 };
 
 const Dashboard = ({ code }: { code: string }) => {
-  const accessToken = localStorage.getItem('spotify_token') || useAuth(code);
+  const accessToken = useAuth(code);
   const [search, setSearch] = useState("");
   const [searchResult, setSearchResult] = useState<
     SearchResultType[] | undefined
@@ -54,7 +54,7 @@ const Dashboard = ({ code }: { code: string }) => {
         res.body.tracks?.items.map((track) => {
           const smallestImage = track.album.images.reduce((smallest, image) => {
             if (smallest.height && image.height) {
-              if (image.height < smallest.height) return image;
+              if (image.height > smallest.height) return image;
               return smallest;
             }
             return image;
@@ -76,11 +76,10 @@ const Dashboard = ({ code }: { code: string }) => {
     setLyricsLoading(true);
     const track = encodeURIComponent(selectedMusic.title);
     const artist = encodeURIComponent(selectedMusic.artist);  
-    fetch(`http://localhost:5124/lyrics?track=${track}&artist=${artist}`, {
+    fetch(`${import.meta.env.VITE_API_URL}lyrics?track=${track}&artist=${artist}`, {
       method: "GET",
     }).then(async (res) => {
       const data = await res.json();
-      console.log("🚀 ~ useEffect ~ data:", data)
       setLyrics(data.lyrics)
     }).finally(() => setLyricsLoading(false));
 

@@ -8,18 +8,17 @@ const Player = ({
   accessToken: string;
   trackUri: string;
 }) => {
+  const [play, setPlay] = useState(false);
 
-    const [play, setPlay] = useState(false);
-
-    useEffect(() => setPlay(true), [trackUri])
+  useEffect(() => setPlay(true), [trackUri]);
 
   return (
     <>
       <SpotifyWebPlayer
         token={accessToken}
         showSaveIcon
-        callback={state => {
-            if(state.isPlaying) setPlay(false)
+        callback={(state) => {
+          if (state.isPlaying) setPlay(false);
         }}
         play={play}
         uris={trackUri ? [trackUri] : []}
